@@ -1,0 +1,534 @@
+/* --- Estilos Globais e Reset Básico --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5; /* Cor de fundo suave */
+    color: #333;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #2c3e50; /* Cor mais escura para títulos */
+    margin-top: 0;
+    margin-bottom: 10px;
+    line-height: 1.2;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* --- Botões Genéricos --- */
+button {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+    text-transform: capitalize; /* Capitaliza a primeira letra */
+}
+
+button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+button:disabled {
+    background-color: #cccccc !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* --- Layout Principal --- */
+.App {
+    max-width: 1300px; /* Ligeiramente mais largo */
+    margin: 25px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Para conter bordas e sombras internas */
+}
+
+/* --- Header --- */
+header {
+    background-color: #0056b3;
+    color: white;
+    padding: 20px 30px;
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+header h1 {
+    font-size: 2em;
+    font-weight: 600;
+    color: white;
+}
+
+/* --- Navegação Principal --- */
+.main-nav {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.main-nav button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 18px;
+    font-weight: 500;
+}
+
+.main-nav button:hover {
+    background-color: #004085;
+}
+
+.main-nav button.active-page {
+    background-color: #004085;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.logout-button { /* Botão Sair */
+    background-color: #dc3545;
+    margin-left: 20px;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+.logged-in-info { /* Span de usuário logado */
+    font-size: 0.95em;
+    color: #e2e6ea;
+    font-weight: 500;
+    margin-left: 15px;
+}
+
+/* --- Main Content Area --- */
+main {
+    padding: 30px;
+}
+
+main h2 {
+    color: #34495e;
+    font-size: 1.8em;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+}
+
+/* --- Section Titles --- */
+.section-title { /* Classe para h3 de seção */
+    font-size: 1.4em;
+    margin-top: 20px;
+    color: #34495e;
+    margin-bottom: 15px;
+}
+.sales-history-title { /* Ajuste para o título do histórico */
+    margin-top: 40px;
+}
+
+
+/* --- General Form and List Containers (Cards) --- */
+.form-card,
+.list-card,
+.sale-details-card,
+.sale-page-container {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Form Styles --- */
+form div.form-group {
+    margin-bottom: 18px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="email"],
+form input[type="password"],
+form textarea,
+form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+form input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+form button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 25px;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-right: 10px;
+}
+
+form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+.button-secondary {
+    background-color: #6c757d;
+    color: white;
+    padding: 12px 25px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.button-secondary:hover {
+    background-color: #5a6268;
+}
+
+.submit-button { /* Botão Finalizar Venda e outros submit */
+    background-color: #28a745;
+    color: white;
+    padding: 12px 25px;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-top: 20px;
+}
+
+.submit-button:hover {
+    background-color: #218838;
+}
+
+/* --- Message Styles (Success/Error) --- */
+p.success-message {
+    color: #28a745 !important;
+    font-weight: bold;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 12px;
+    border-radius: 5px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+p.error-message {
+    color: #dc3545 !important;
+    font-weight: bold;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 12px;
+    border-radius: 5px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+/* --- List Item Styles (Products, Clients, Users, Sales History) --- */
+.list-item {
+    background-color: #fefefe;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.list-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.list-item h3 {
+    color: #007bff;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.list-item p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.list-item .actions { /* Botões de ação dentro do item de lista */
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    align-self: flex-end; /* Alinha os botões à direita */
+}
+
+.list-item .actions button {
+    padding: 8px 15px;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: white;
+}
+
+.edit-button {
+    background-color: #007bff;
+}
+.edit-button:hover {
+    background-color: #0056b3;
+}
+
+.delete-button {
+    background-color: #dc3545;
+}
+.delete-button:hover {
+    background-color: #c82333;
+}
+
+/* --- Sales Page Specific Styles --- */
+.sales-item-list {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.sales-item-list li {
+    border-bottom: 1px dashed #e0e0e0;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    margin-bottom: 0;
+    box-shadow: none;
+    transition: none;
+    transform: none;
+}
+
+.sales-item-list li:last-child {
+    border-bottom: none;
+}
+
+.sales-item-list li h4 {
+    color: #34495e;
+    margin-bottom: 5px;
+}
+
+.sales-item-list li p {
+    font-size: 0.9em;
+}
+
+.item-qty-control {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-input { /* Input de quantidade no carrinho */
+    width: 60px;
+    margin-left: 5px;
+    margin-right: 10px;
+    text-align: center;
+    padding: 8px;
+    font-size: 0.9em;
+}
+
+.remove-item-button { /* Botão de remover item do carrinho */
+    background-color: #ffc107;
+    color: #212529;
+    padding: 6px 12px;
+    font-weight: bold;
+}
+.remove-item-button:hover {
+    background-color: #e0a800;
+}
+
+.total-sale-display {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #28a745;
+    text-align: right;
+    margin-top: 25px;
+    padding-top: 15px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.filtered-products-list { /* Lista de produtos filtrada na busca de vendas */
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    max-height: 150px;
+    overflow-y: auto;
+}
+.filtered-products-list li {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+    margin-bottom: 0;
+    box-shadow: none;
+    transition: background-color 0.2s ease;
+    transform: none;
+}
+.filtered-products-list li:hover {
+    background-color: #f5f5f5;
+}
+.filtered-products-list li:last-child {
+    border-bottom: none;
+}
+
+.submit-button { /* Botão Finalizar Venda e outros submit */
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    background-color: #28a745;
+    color: white;
+}
+.submit-button:hover {
+    background-color: #218838;
+}
+
+.back-button { /* Botão Voltar (detalhes da venda) */
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+}
+.back-button:hover {
+    background-color: #0056b3;
+}
+
+.details-button { /* Botão Ver Detalhes (histórico de vendas) */
+    margin-top: 10px;
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: white;
+    font-size: 0.9em;
+}
+.details-button:hover {
+    background-color: #0056b3;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    border-top: 1px solid #eee;
+    color: #777;
+    font-size: 0.9em;
+    background-color: #f8f9fa;
+    border-radius: 0 0 10px 10px;
+}
+
+/* --- Responsividade Básica --- */
+@media (max-width: 768px) {
+    .App {
+        margin: 10px auto;
+        padding: 15px;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 15px;
+    }
+    header h1 {
+        font-size: 1.6em;
+    }
+
+    .main-nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .main-nav button {
+        width: 100%;
+        margin-right: 0 !important;
+        margin-bottom: 5px;
+    }
+    .logout-button { /* Precisa ser ajustado no mobile */
+        margin-left: 0 !important;
+    }
+    .logged-in-info {
+        text-align: center;
+        width: 100%;
+        margin-left: 0 !important;
+        margin-top: 10px;
+    }
+
+    main {
+        padding: 15px;
+    }
+
+    main h2 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+    }
+
+    .form-card, .list-card, .sale-details-card, .sale-page-container {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    form input, form select, form textarea {
+        width: 100%;
+    }
+
+    .list-item .actions {
+        align-self: stretch;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .list-item .actions button {
+        flex: 1;
+    }
+
+    .sales-item-list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .sales-item-list li .item-qty-control {
+        margin-top: 10px;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    /* Estilos para o status da venda */
+.sale-status-cancelled {
+    color: #dc3545; /* Vermelho */
+    font-weight: bold;
+}
+
+.sale-status-completed {
+    color: #28a745; /* Verde */
+    font-weight: bold;
+}
