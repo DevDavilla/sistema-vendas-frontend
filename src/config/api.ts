@@ -1,1 +1,2 @@
-export const BACKEND_BASE_URL = "https://196c-190-102-47-102.ngrok-free.app";
+export const BACKEND_BASE_URL =
+  "https://sistema-vendas-backend-no8y.onrender.com";
