@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from "react";
-import ClientForm from "../components/ClientForm";
-import { BACKEND_BASE_URL, getAuthHeaders } from "../utils/authUtils";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import ClientForm from "../components/ClientForm";
 import Loader from "../components/Loader";
+import { BACKEND_BASE_URL, getAuthHeaders } from "../utils/authUtils";
 
 // Interfaces necessárias para esta página (declaradas localmente)
 interface Client {
@@ -13,36 +13,6 @@ interface Client {
   telefone: string;
   endereco: string | null;
   criado_em: string;
-}
-
-interface Product {
-  id?: number;
-  nome?: string;
-  preco_venda?: string;
-  estoque?: number;
-}
-interface User {
-  id?: number;
-  nome_usuario?: string;
-  permissao?: string;
-}
-interface SaleItem {
-  id?: number;
-  produto_id?: number;
-  quantidade?: number;
-  preco_unitario_vendido?: string;
-  subtotal?: string;
-  nome_produto?: string;
-}
-interface Sale {
-  id?: number;
-  cliente_id?: number | null;
-  usuario_id?: number;
-  data_hora?: string;
-  total_venda?: string;
-  forma_pagamento?: string;
-  status?: string;
-  itens?: SaleItem[];
 }
 
 function ClientsPage({ token }: { token: string | null }) {

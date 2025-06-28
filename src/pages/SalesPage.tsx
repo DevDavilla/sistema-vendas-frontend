@@ -469,7 +469,6 @@ function SalesPage({ token }: { token: string | null }) {
         <ul className="sales-item-list">
           {saleItems.map((item) => (
             <li key={item.product.id}>
-              {console.log("Item sendo renderizado:", item)}
               <div>
                 <h4>{item.product.nome}</h4>
                 <p>

@@ -21,7 +21,9 @@ function ProductsPage({ token }: { token: string | null }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   // Removido: const [error, setError] = useState<string | null>(null);
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | undefined>(
+    undefined
+  );
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -51,7 +53,7 @@ function ProductsPage({ token }: { token: string | null }) {
 
   const handleProductChange = () => {
     fetchProducts();
-    setEditingProduct(null);
+    setEditingProduct(undefined);
   };
 
   const handleDeleteProduct = async (id: number) => {
@@ -75,7 +77,7 @@ function ProductsPage({ token }: { token: string | null }) {
       setProducts(products.filter((product) => product.id !== id));
       console.log(`Produto com ID ${id} deletado com sucesso.`);
       toast.success(`Produto deletado com sucesso!`);
-      setEditingProduct(null);
+      setEditingProduct(undefined);
     } catch (err: any) {
       console.error("Erro ao deletar produto:", err);
       toast.error(`Erro ao deletar produto: ${err.message}`);
@@ -89,7 +91,7 @@ function ProductsPage({ token }: { token: string | null }) {
   };
 
   const handleCancelEdit = () => {
-    setEditingProduct(null);
+    setEditingProduct(undefined);
   };
 
   if (loading) {

@@ -7,7 +7,7 @@ interface Product {
   id?: number;
   nome: string;
   descricao: string | null;
-  preco_venda: number;
+  preco_venda: string;
   estoque: number;
   codigo_barras: string | null;
   ativo?: boolean;
@@ -16,7 +16,7 @@ interface Product {
 interface ProductFormProps {
   onProductAdded?: () => void;
   onProductUpdated?: () => void;
-  productToEdit?: Product | null;
+  productToEdit?: Product;
   onCancelEdit?: () => void;
   token: string | null;
 }
