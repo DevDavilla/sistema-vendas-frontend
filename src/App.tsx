@@ -1,23 +1,16 @@
-import { useState, useEffect } from "react";
-import "./App.css";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
 import LoginPage from "./components/LoginPage";
 
-import ProductsPage from "./pages/ProductsPage";
 import ClientsPage from "./pages/ClientsPage";
-import UsersPage from "./pages/UsersPage";
-import SalesPage from "./pages/SalesPage";
+import ProductsPage from "./pages/ProductsPage";
 import ReportsPage from "./pages/ReportsPage";
+import SalesPage from "./pages/SalesPage";
+import UsersPage from "./pages/UsersPage";
 
-import { BACKEND_BASE_URL, getAuthHeaders } from "./utils/authUtils";
-
-interface User {
-  id: number;
-  nome_usuario?: string;
-  permissao?: string;
-}
 // --- Componente principal App ---
 function App() {
   const [token, setToken] = useState<string | null>(null);

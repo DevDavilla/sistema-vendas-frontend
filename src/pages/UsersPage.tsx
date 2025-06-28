@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react"; // Adicionado React e corrigido import
-import UserForm from "../components/UserForm";
-import { BACKEND_BASE_URL, getAuthHeaders } from "../utils/authUtils";
+import { useCallback, useEffect, useState } from "react"; // Adicionado React e corrigido import
 import { toast } from "react-toastify"; // Importa toast
 import Loader from "../components/Loader";
+import UserForm from "../components/UserForm";
+import { BACKEND_BASE_URL, getAuthHeaders } from "../utils/authUtils";
 
 // Interfaces necessárias para esta página (declaradas localmente)
 interface User {
@@ -11,36 +11,6 @@ interface User {
   permissao: string;
   ativo: boolean;
   criado_em: string;
-}
-
-// Outras interfaces que podem ser usadas aqui se necessário
-interface Product {
-  id?: number;
-  nome?: string;
-  preco_venda?: string;
-  estoque?: number;
-}
-interface Client {
-  id?: number;
-  nome?: string;
-  telefone?: string;
-}
-interface SaleItem {
-  id?: number;
-  produto_id?: number;
-  quantidade?: number;
-  preco_unitario_vendido?: string;
-  subtotal?: string;
-}
-interface Sale {
-  id?: number;
-  cliente_id?: number | null;
-  usuario_id?: number;
-  data_hora?: string;
-  total_venda?: string;
-  forma_pagamento?: string;
-  status?: string;
-  itens?: SaleItem[];
 }
 
 function UsersPage({ token }: { token: string | null }) {
