@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
-import UserForm from "../components/UserForm"; // Caminho atualizado para components
-import { BACKEND_BASE_URL, getAuthHeaders } from "../utils/authUtils"; // Imports de utilitários
-import { toast } from "react-toastify";
+import React, { useState, useEffect, useCallback } from "react"; // Adicionado React e corrigido import
+import UserForm from "../components/UserForm";
+import { BACKEND_BASE_URL, getAuthHeaders } from "../utils/authUtils";
+import { toast } from "react-toastify"; // Importa toast
 import Loader from "../components/Loader";
 
 // Interfaces necessárias para esta página (declaradas localmente)
@@ -11,6 +11,36 @@ interface User {
   permissao: string;
   ativo: boolean;
   criado_em: string;
+}
+
+// Outras interfaces que podem ser usadas aqui se necessário
+interface Product {
+  id?: number;
+  nome?: string;
+  preco_venda?: string;
+  estoque?: number;
+}
+interface Client {
+  id?: number;
+  nome?: string;
+  telefone?: string;
+}
+interface SaleItem {
+  id?: number;
+  produto_id?: number;
+  quantidade?: number;
+  preco_unitario_vendido?: string;
+  subtotal?: string;
+}
+interface Sale {
+  id?: number;
+  cliente_id?: number | null;
+  usuario_id?: number;
+  data_hora?: string;
+  total_venda?: string;
+  forma_pagamento?: string;
+  status?: string;
+  itens?: SaleItem[];
 }
 
 function UsersPage({ token }: { token: string | null }) {
@@ -36,7 +66,7 @@ function UsersPage({ token }: { token: string | null }) {
       setUsers(data);
     } catch (err: any) {
       console.error("Erro ao carregar usuários:", err);
-      toast.error(`Erro ao carregar usuários: ${err.message}`); // <-- NOVO: Toast de erro
+      toast.error(`Erro ao carregar usuários: ${err.message}`);
       // Removido: setError(err.message);
     } finally {
       setLoading(false);
@@ -56,7 +86,7 @@ function UsersPage({ token }: { token: string | null }) {
     if (!window.confirm("Tem certeza que deseja deletar este usuário?")) {
       return;
     }
-    setLoading(true); // Ativa loading
+    setLoading(true);
     try {
       const response = await fetch(`${BACKEND_BASE_URL}/api/usuarios/${id}`, {
         method: "DELETE",
@@ -72,14 +102,14 @@ function UsersPage({ token }: { token: string | null }) {
 
       setUsers(users.filter((user) => user.id !== id));
       console.log(`Usuário com ID ${id} deletado com sucesso.`);
-      toast.success(`Usuário deletado com sucesso!`); // <-- NOVO: Toast de sucesso
+      toast.success(`Usuário deletado com sucesso!`);
       setEditingUser(null);
     } catch (err: any) {
       console.error("Erro ao deletar usuário:", err);
-      toast.error(`Erro ao deletar usuário: ${err.message}`); // <-- NOVO: Toast de erro
+      toast.error(`Erro ao deletar usuário: ${err.message}`);
       // Removido: setError(err.message);
     } finally {
-      setLoading(false); // Desativa loading
+      setLoading(false);
     }
   };
 

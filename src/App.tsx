@@ -1,30 +1,30 @@
 import React, { useState, useEffect, useCallback } from "react";
-import "./App.css"; // Seu CSS principal
-import { ToastContainer, toast } from "react-toastify"; // <-- NOVO: Importa ToastContainer e toast
-import "react-toastify/dist/ReactToastify.css"; // <-- NOVO: Importa os estilos CSS do toast
+import "./App.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-// Importa os componentes de formulário (usados pelas páginas)
 import LoginPage from "./components/LoginPage";
 
-// Importa as páginas refatoradas (ELAS ESTÃO NA PASTA src/pages/)
 import ProductsPage from "./pages/ProductsPage";
 import ClientsPage from "./pages/ClientsPage";
 import UsersPage from "./pages/UsersPage";
 import SalesPage from "./pages/SalesPage";
 import ReportsPage from "./pages/ReportsPage";
 
-// Importa a URL base e a função de headers de autenticação (usados por App e pages)
 import { BACKEND_BASE_URL, getAuthHeaders } from "./utils/authUtils";
 
+interface User {
+  id: number;
+  nome_usuario?: string;
+  permissao?: string;
+}
 // --- Componente principal App ---
 function App() {
-  // Estados para gerenciar a autenticação
   const [token, setToken] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
   const [userPermission, setUserPermission] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState("products"); // Estado para controlar a página atual
+  const [currentPage, setCurrentPage] = useState("products");
 
-  // Efeito para carregar token do localStorage ao iniciar
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     const storedUserId = localStorage.getItem("userId");
@@ -37,7 +37,6 @@ function App() {
     }
   }, []);
 
-  // Função para lidar com o sucesso do login
   const handleLoginSuccess = (
     newToken: string,
     newUserId: number,
@@ -49,11 +48,10 @@ function App() {
     localStorage.setItem("token", newToken);
     localStorage.setItem("userId", newUserId.toString());
     localStorage.setItem("userPermission", newUserPermission);
-    setCurrentPage("products"); // Redireciona para a página de produtos após login
-    toast.success("Login bem-sucedido!"); // <-- NOVO: Toast de sucesso no login
+    setCurrentPage("products");
+    toast.success("Login bem-sucedido!");
   };
 
-  // Função para lidar com o logout
   const handleLogout = () => {
     setToken(null);
     setUserId(null);
@@ -61,14 +59,12 @@ function App() {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     localStorage.removeItem("userPermission");
-    setCurrentPage("products"); // Volta para login ou página inicial
-    toast.info("Você foi desconectado."); // <-- NOVO: Toast de informação no logout
+    setCurrentPage("products");
+    toast.info("Você foi desconectado.");
   };
 
-  // Renderiza a página atual com base no estado 'currentPage'
   const renderPage = () => {
     if (!token) {
-      // A LoginPage terá seus próprios toasts de erro/sucesso de login
       return <LoginPage onLoginSuccess={handleLoginSuccess} />;
     }
 
@@ -100,8 +96,7 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-      />{" "}
-      {/* <-- NOVO: Container para os Toasts */}
+      />
       <header>
         <h1>Sistema de Gerenciamento de Vendas</h1>
         {token && (

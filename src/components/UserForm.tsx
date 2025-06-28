@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-import { BACKEND_BASE_URL, getAuthHeaders } from "../utils/authUtils"; // Importa do utils
+import React, { useState, useEffect, useCallback } from "react"; // Adicionado React e corrigido import
+import { BACKEND_BASE_URL, getAuthHeaders } from "../utils/authUtils"; // Imports de utilitários
+import { toast } from "react-toastify"; // Importa toast
 
 // Interfaces necessárias para este componente (declaradas localmente)
 interface User {
@@ -30,8 +31,6 @@ function UserForm({
   const [permissao, setPermissao] = useState("vendedor");
   const [ativo, setAtivo] = useState(true);
   const [loading, setLoading] = useState(false);
-  // Removido: const [error, setError] = useState<string | null>(null);
-  // Removido: const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (userToEdit) {
@@ -39,13 +38,11 @@ function UserForm({
       setSenha("");
       setPermissao(userToEdit.permissao);
       setAtivo(userToEdit.ativo ?? true);
-      // Removido: setError(null); setSuccessMessage(null);
     } else {
       setNomeUsuario("");
       setSenha("");
       setPermissao("vendedor");
       setAtivo(true);
-      // Removido: setError(null); setSuccessMessage(null);
     }
   }, [userToEdit]);
 
@@ -53,12 +50,11 @@ function UserForm({
     e.preventDefault();
 
     setLoading(true);
-    // Removido: setError(null); setSuccessMessage(null);
 
     if (!nomeUsuario || (!userToEdit && !senha)) {
       toast.error(
         "Nome de usuário e senha (para novos usuários) são obrigatórios."
-      ); // <-- NOVO: Toast de erro
+      );
       setLoading(false);
       return;
     }
@@ -104,9 +100,7 @@ function UserForm({
         `Usuário "${returnedUser.nome_usuario}" ${
           userToEdit ? "atualizado" : "adicionado"
         } com sucesso!`
-      ); // <-- NOVO: Toast de sucesso
-
-      // Removido: setTimeout para limpar mensagem de sucesso
+      );
 
       if (!userToEdit) {
         setNomeUsuario("");
@@ -131,8 +125,7 @@ function UserForm({
         `Erro ao ${userToEdit ? "atualizar" : "adicionar"} usuário: ${
           err.message
         }`
-      ); // <-- NOVO: Toast de erro
-      // Removido: setError(err.message); e setTimeout para limpar erro
+      );
     } finally {
       setLoading(false);
     }

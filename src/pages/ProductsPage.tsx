@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
-import ProductForm from "../components/ProductForm"; // Caminho atualizado para components
-import { BACKEND_BASE_URL, getAuthHeaders } from "../utils/authUtils"; // Imports de utilitários
+import ProductForm from "../components/ProductForm";
+import { BACKEND_BASE_URL, getAuthHeaders } from "../utils/authUtils";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 
@@ -9,7 +9,7 @@ interface Product {
   id: number;
   nome: string;
   descricao: string | null;
-  preco_venda: string;
+  preco_venda: string; // <--- AGORA É STRING AQUI, COMO VEM DO DB
   estoque: number;
   codigo_barras: string | null;
   ativo: boolean;
@@ -25,7 +25,6 @@ function ProductsPage({ token }: { token: string | null }) {
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
-    // Removido: setError(null);
     try {
       const response = await fetch(`${BACKEND_BASE_URL}/api/produtos`, {
         headers: getAuthHeaders(token),
@@ -40,8 +39,7 @@ function ProductsPage({ token }: { token: string | null }) {
       setProducts(data);
     } catch (err: any) {
       console.error("Erro ao carregar produtos:", err);
-      toast.error(`Erro ao carregar produtos: ${err.message}`); // <-- NOVO: Toast de erro
-      // Removido: setError(err.message);
+      toast.error(`Erro ao carregar produtos: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -60,7 +58,7 @@ function ProductsPage({ token }: { token: string | null }) {
     if (!window.confirm("Tem certeza que deseja deletar este produto?")) {
       return;
     }
-    setLoading(true); // Ativa loading para a operação
+    setLoading(true);
     try {
       const response = await fetch(`${BACKEND_BASE_URL}/api/produtos/${id}`, {
         method: "DELETE",
@@ -76,14 +74,13 @@ function ProductsPage({ token }: { token: string | null }) {
 
       setProducts(products.filter((product) => product.id !== id));
       console.log(`Produto com ID ${id} deletado com sucesso.`);
-      toast.success(`Produto deletado com sucesso!`); // <-- NOVO: Toast de sucesso
+      toast.success(`Produto deletado com sucesso!`);
       setEditingProduct(null);
     } catch (err: any) {
       console.error("Erro ao deletar produto:", err);
-      toast.error(`Erro ao deletar produto: ${err.message}`); // <-- NOVO: Toast de erro
-      // Removido: setError(err.message);
+      toast.error(`Erro ao deletar produto: ${err.message}`);
     } finally {
-      setLoading(false); // Desativa loading
+      setLoading(false);
     }
   };
 
@@ -95,10 +92,9 @@ function ProductsPage({ token }: { token: string | null }) {
     setEditingProduct(null);
   };
 
-  if (loading)
-    if (loading) {
-      return <Loader />;
-    }
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <>

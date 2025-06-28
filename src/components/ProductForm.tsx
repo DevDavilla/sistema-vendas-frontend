@@ -81,7 +81,7 @@ function ProductForm({
 
     try {
       const url = productToEdit
-        ? `<span class="math-inline">\{BACKEND\_BASE\_URL\}/api/produtos/</span>{productToEdit.id}`
+        ? `${BACKEND_BASE_URL}/api/produtos/${productToEdit.id}`
         : `${BACKEND_BASE_URL}/api/produtos`;
       const method = productToEdit ? "PUT" : "POST";
 
@@ -218,8 +218,6 @@ function ProductForm({
             Cancelar Edição
           </button>
         )}
-
-        {/* Removidos: {error && <p className="error-message">{error}</p>} e {successMessage && <p className="success-message">{successMessage}</p>} */}
       </form>
     </div>
   );

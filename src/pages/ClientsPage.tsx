@@ -15,15 +15,45 @@ interface Client {
   criado_em: string;
 }
 
+interface Product {
+  id?: number;
+  nome?: string;
+  preco_venda?: string;
+  estoque?: number;
+}
+interface User {
+  id?: number;
+  nome_usuario?: string;
+  permissao?: string;
+}
+interface SaleItem {
+  id?: number;
+  produto_id?: number;
+  quantidade?: number;
+  preco_unitario_vendido?: string;
+  subtotal?: string;
+  nome_produto?: string;
+}
+interface Sale {
+  id?: number;
+  cliente_id?: number | null;
+  usuario_id?: number;
+  data_hora?: string;
+  total_venda?: string;
+  forma_pagamento?: string;
+  status?: string;
+  itens?: SaleItem[];
+}
+
 function ClientsPage({ token }: { token: string | null }) {
   const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  // Removido: const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [editingClient, setEditingClient] = useState<Client | null>(null);
 
   const fetchClients = useCallback(async () => {
     setLoading(true);
-    // Removido: setError(null);
+    setError(null);
     try {
       const response = await fetch(`${BACKEND_BASE_URL}/api/clientes`, {
         headers: getAuthHeaders(token),
@@ -38,8 +68,8 @@ function ClientsPage({ token }: { token: string | null }) {
       setClients(data);
     } catch (err: any) {
       console.error("Erro ao carregar clientes:", err);
-      toast.error(`Erro ao carregar clientes: ${err.message}`); // <-- NOVO: Toast de erro
-      // Removido: setError(err.message);
+      setError(err.message);
+      toast.error(`Erro ao carregar clientes: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -58,7 +88,7 @@ function ClientsPage({ token }: { token: string | null }) {
     if (!window.confirm("Tem certeza que deseja deletar este cliente?")) {
       return;
     }
-    setLoading(true); // Ativa loading
+    setLoading(true);
     try {
       const response = await fetch(`${BACKEND_BASE_URL}/api/clientes/${id}`, {
         method: "DELETE",
@@ -74,14 +104,14 @@ function ClientsPage({ token }: { token: string | null }) {
 
       setClients(clients.filter((client) => client.id !== id));
       console.log(`Cliente com ID ${id} deletado com sucesso.`);
-      toast.success(`Cliente deletado com sucesso!`); // <-- NOVO: Toast de sucesso
+      toast.success(`Cliente deletado com sucesso!`);
       setEditingClient(null);
     } catch (err: any) {
       console.error("Erro ao deletar cliente:", err);
-      toast.error(`Erro ao deletar cliente: ${err.message}`); // <-- NOVO: Toast de erro
-      // Removido: setError(err.message);
+      setError(err.message);
+      toast.error(`Erro ao deletar cliente: ${err.message}`);
     } finally {
-      setLoading(false); // Desativa loading
+      setLoading(false);
     }
   };
 
@@ -97,8 +127,21 @@ function ClientsPage({ token }: { token: string | null }) {
     return <Loader />;
   }
 
-  // Removido: Bloco de erro da página (agora tratado por toasts)
-  // if (error) { ... }
+  if (error) {
+    return (
+      <p className="error-message">
+        Erro: {error}. Certifique-se de que o backend está rodando em{" "}
+        <a
+          href={`${BACKEND_BASE_URL}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {BACKEND_BASE_URL}
+        </a>
+        .
+      </p>
+    );
+  }
 
   return (
     <>

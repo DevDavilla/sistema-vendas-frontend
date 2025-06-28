@@ -1,14 +1,10 @@
 import { useState } from "react";
 import "./LoginPage.css";
 import { BACKEND_BASE_URL } from "../config/api";
-import { toast } from "react-toastify";
+import { toast } from "react-toastify"; // Importa toast
 
-// Interfaces necessárias para este componente (declaradas localmente)
-interface LoginUser {
-  id: number;
-  nome_usuario: string;
-  permissao: string;
-}
+// Removido: Interface LoginUser não é usada.
+// interface LoginUser { id: number; nome_usuario: string; permissao: string; }
 
 interface LoginPageProps {
   onLoginSuccess: (
@@ -22,12 +18,10 @@ function LoginPage({ onLoginSuccess }: LoginPageProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  // Removido: const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Removido: setError(null);
 
     try {
       const response = await fetch(`${BACKEND_BASE_URL}/api/auth/login`, {
@@ -47,11 +41,9 @@ function LoginPage({ onLoginSuccess }: LoginPageProps) {
 
       const data = await response.json();
       onLoginSuccess(data.token, data.user.id, data.user.permissao);
-      // Removido: Mensagem de sucesso aqui (já tratada em App.tsx)
     } catch (err: any) {
       console.error("Erro no login:", err);
-      toast.error(`Falha no login: ${err.message}`); // <-- NOVO: Toast de erro
-      // Removido: setError(err.message);
+      toast.error(`Falha no login: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -84,7 +76,6 @@ function LoginPage({ onLoginSuccess }: LoginPageProps) {
         <button type="submit" disabled={loading} className="login-button">
           {loading ? "Entrando..." : "Entrar"}
         </button>
-        {/* Removido: {error && <p className="error-message">{error}</p>} */}
       </form>
     </div>
   );

@@ -67,17 +67,12 @@ function SalesPage({ token }: { token: string | null }) {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   const [loading, setLoading] = useState<boolean>(false); // General loading
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
   const [salesHistory, setSalesHistory] = useState<Sale[]>([]);
   const [loadingHistory, setLoadingHistory] = useState<boolean>(true); // Loading for history fetch
-  const [errorHistory, setErrorHistory] = useState<string | null>(null);
   const [selectedSale, setSelectedSale] = useState<Sale | null>(null);
 
   const fetchSalesHistory = useCallback(async () => {
     setLoadingHistory(true);
-    setErrorHistory(null);
     try {
       const response = await fetch(`${BACKEND_BASE_URL}/api/vendas`, {
         headers: getAuthHeaders(token),
@@ -92,8 +87,7 @@ function SalesPage({ token }: { token: string | null }) {
       setSalesHistory(data);
     } catch (err: any) {
       console.error("Erro ao carregar histórico de vendas:", err);
-      setErrorHistory(err.message);
-      toast.error(`Erro ao carregar histórico de vendas: ${err.message}`); // <-- NOVO: Toast de erro
+      toast.error(`Erro ao carregar histórico de vendas: ${err.message}`);
     } finally {
       setLoadingHistory(false);
     }
@@ -101,11 +95,13 @@ function SalesPage({ token }: { token: string | null }) {
 
   const fetchSaleDetails = async (id: number) => {
     setLoadingHistory(true); // Reusa o loading para detalhes também
-    setErrorHistory(null);
     try {
-      const response = await fetch(`${BACKEND_BASE_URL}/api/vendas/${id}`, {
-        headers: getAuthHeaders(token),
-      });
+      const response = await fetch(
+        `<span class="math-inline">\{BACKEND\_BASE\_URL\}/api/vendas/</span>{id}`,
+        {
+          headers: getAuthHeaders(token),
+        }
+      );
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
@@ -116,8 +112,7 @@ function SalesPage({ token }: { token: string | null }) {
       setSelectedSale(data);
     } catch (err: any) {
       console.error(`Erro ao carregar detalhes da venda ${id}:`, err);
-      setErrorHistory(err.message);
-      toast.error(`Erro ao carregar detalhes da venda: ${err.message}`); // <-- NOVO: Toast de erro
+      toast.error(`Erro ao carregar detalhes da venda: ${err.message}`);
     } finally {
       setLoadingHistory(false);
     }
@@ -126,7 +121,6 @@ function SalesPage({ token }: { token: string | null }) {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true); // General loading for initial data
-      setError(null);
       try {
         const [clientsRes, productsRes, usersRes] = await Promise.all([
           fetch(`${BACKEND_BASE_URL}/api/clientes`, {
@@ -158,10 +152,9 @@ function SalesPage({ token }: { token: string | null }) {
         await fetchSalesHistory(); // Carrega o histórico de vendas inicialmente
       } catch (err: any) {
         console.error("Erro ao carregar dados para a página de vendas:", err);
-        setError(err.message);
         toast.error(
           `Erro ao carregar dados para a página de vendas: ${err.message}`
-        ); // <-- NOVO: Toast de erro
+        );
       } finally {
         setLoading(false); // End general loading
       }
@@ -236,21 +229,19 @@ function SalesPage({ token }: { token: string | null }) {
   const totalSale = saleItems.reduce((sum, item) => sum + item.subtotal, 0);
 
   const handleFinalizeSale = async () => {
-    setError(null);
-    setSuccessMessage(null);
     setLoading(true); // Ativa loading para a operação de finalização
     if (!selectedUserId) {
-      setError("Por favor, selecione o usuário responsável pela venda.");
+      toast.error("Por favor, selecione o usuário responsável pela venda.");
       setLoading(false);
       return;
     }
     if (!paymentMethod) {
-      setError("Por favor, selecione a forma de pagamento.");
+      toast.error("Por favor, selecione a forma de pagamento.");
       setLoading(false);
       return;
     }
     if (saleItems.length === 0) {
-      setError("Adicione pelo menos um item à venda.");
+      toast.error("Adicione pelo menos um item à venda.");
       setLoading(false);
       return;
     }
@@ -280,7 +271,7 @@ function SalesPage({ token }: { token: string | null }) {
       }
 
       const result = await response.json();
-      setSuccessMessage(
+      toast.success(
         `Venda #${
           result.venda.id
         } registrada com sucesso! Total: R$ ${parseFloat(
@@ -295,18 +286,9 @@ function SalesPage({ token }: { token: string | null }) {
       setFilteredProducts([]);
 
       await fetchSalesHistory(); // Recarrega o histórico de vendas após nova venda
-
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
-      toast.success(`Venda registrada com sucesso!`); // <-- NOVO: Toast de sucesso
     } catch (err: any) {
       console.error("Erro ao finalizar venda:", err);
-      setError(err.message);
-      toast.error(`Erro ao finalizar venda: ${err.message}`); // <-- NOVO: Toast de erro
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
+      toast.error(`Erro ao finalizar venda: ${err.message}`);
     } finally {
       setLoading(false); // Desativa loading após a operação
     }
@@ -314,13 +296,10 @@ function SalesPage({ token }: { token: string | null }) {
 
   const handleCancelSale = async (saleId: number, currentStatus: string) => {
     if (currentStatus === "Cancelada") {
-      toast.warn("Esta venda já está cancelada."); // <-- NOVO: Toast de aviso
-      // Removido: setError('Esta venda já está cancelada.'); setTimeout(() => setError(null), 3000);
+      toast.warn("Esta venda já está cancelada.");
       return;
     }
     setLoading(true); // Ativa loading para a operação de cancelamento
-    setError(null);
-    setSuccessMessage(null);
 
     try {
       const response = await fetch(
@@ -343,30 +322,20 @@ function SalesPage({ token }: { token: string | null }) {
         `Venda #${saleId} ${
           result.message.includes("desativada") ? "desativada" : "cancelada"
         } com sucesso!`
-      ); // <-- NOVO: Toast de sucesso
+      );
 
       await fetchSalesHistory();
-
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
     } catch (err: any) {
       console.error(`Erro ao cancelar venda ${saleId}:`, err);
-      toast.error(`Erro ao cancelar venda: ${err.message}`); // <-- NOVO: Toast de erro
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
+      toast.error(`Erro ao cancelar venda: ${err.message}`);
     } finally {
-      setLoading(false); // Desativa loading após a operação
+      setLoading(false);
     }
   };
 
   if (loading || loadingHistory) {
     return <Loader />;
   }
-
-  // Removido: Bloco de erro da página (agora tratado por toasts)
-  // if (error || errorHistory) { ... }
 
   if (selectedSale) {
     return (
@@ -430,9 +399,6 @@ function SalesPage({ token }: { token: string | null }) {
   return (
     <div className="sale-page-container">
       <h2>Registrar Nova Venda</h2>
-
-      {/* Removido: {error && <p className="error-message">{error}</p>} */}
-      {/* Removido: {successMessage && <p className="success-message">{successMessage}</p>} */}
 
       {/* Seleção de Cliente */}
       <div className="form-group">
@@ -506,11 +472,15 @@ function SalesPage({ token }: { token: string | null }) {
         <ul className="sales-item-list">
           {saleItems.map((item) => (
             <li key={item.product.id}>
+              {console.log("Item sendo renderizado:", item)}
               <div>
                 <h4>{item.product.nome}</h4>
                 <p>
-                  Preço Unit.: R${" "}
-                  {parseFloat(item.product.preco_venda).toFixed(2)}
+                  Preço Unit.: R$
+                  {
+                    // Usa item.product.preco_venda, que está no JSON, e garante que é string antes de parseFloat
+                    parseFloat(item.product.preco_venda || "0").toFixed(2) // <-- CORRIGIDO AQUI!
+                  }
                 </p>
                 <p>Subtotal: R$ {item.subtotal.toFixed(2)}</p>
               </div>
@@ -598,7 +568,7 @@ function SalesPage({ token }: { token: string | null }) {
               <button
                 onClick={() => handleCancelSale(sale.id, sale.status)}
                 className="delete-button"
-                style={{ marginLeft: "10px" }} // Manter temporariamente por causa do estilo vermelho, se não tiver uma classe especifica
+                style={{ marginLeft: "10px" }}
                 disabled={sale.status === "Cancelada"}
               >
                 {sale.status === "Cancelada" ? "Cancelada" : "Cancelar Venda"}

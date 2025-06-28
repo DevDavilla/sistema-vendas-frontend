@@ -77,7 +77,7 @@ function ClientForm({
 
     try {
       const url = clientToEdit
-        ? `<span class="math-inline">\{BACKEND\_BASE\_URL\}/api/clientes/</span>{clientToEdit.id}`
+        ? `${BACKEND_BASE_URL}/api/clientes/${clientToEdit.id}`
         : `${BACKEND_BASE_URL}/api/clientes`;
       const method = clientToEdit ? "PUT" : "POST";
 
@@ -202,7 +202,6 @@ function ClientForm({
             Cancelar Edição
           </button>
         )}
-        {/* Removidos: {error && <p className="error-message">{error}</p>} e {successMessage && <p className="success-message">{successMessage}</p>} */}
       </form>
     </div>
   );
