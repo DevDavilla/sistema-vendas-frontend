@@ -1,4 +1,3 @@
-import React from "react";
 import "./Loader.css"; // Vamos criar este arquivo CSS
 
 function Loader() {

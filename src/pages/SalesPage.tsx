@@ -96,12 +96,9 @@ function SalesPage({ token }: { token: string | null }) {
   const fetchSaleDetails = async (id: number) => {
     setLoadingHistory(true); // Reusa o loading para detalhes também
     try {
-      const response = await fetch(
-        `<span class="math-inline">\{BACKEND\_BASE\_URL\}/api/vendas/</span>{id}`,
-        {
-          headers: getAuthHeaders(token),
-        }
-      );
+      const response = await fetch(`${BACKEND_BASE_URL}/api/vendas/${id}`, {
+        headers: getAuthHeaders(token),
+      });
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
